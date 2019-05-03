@@ -14,3 +14,8 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+Route::post('/purchase/{item}', 'PurchaseController@create');
+Route::post('/sell/{item}', 'SellController@create');
+Route::get('/metrics/{item}', 'MetricsController@read');
