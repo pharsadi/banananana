@@ -1,5 +1,6 @@
 <?php namespace App\Repositories;
 
+use App\Item;
 use Illuminate\Database\Eloquent\Model;
 
 class Transaction implements RepositoryInterface
@@ -105,10 +106,10 @@ class Transaction implements RepositoryInterface
      * @param $item
      * @return Model
      */
-    public function purchase($data, $item)
+    public function purchase($data, Item $item)
     {
         $createData = [
-            'item' => $item,
+            'item' => $item->name,
             'price_per_item' => $data['price'] ?? static::$defaultPurchasePrice,
             'transaction_type' => static::$typePurchase,
             'transaction_date' => $data['transaction_date'],
@@ -122,10 +123,10 @@ class Transaction implements RepositoryInterface
      * @param $item
      * @return Model
      */
-    public function sell($data, $item)
+    public function sell($data, Item $item)
     {
         $createData = [
-            'item' => $item,
+            'item' => $item->name,
             'price_per_item' => $data['price'] ?? static::$defaultSellPrice,
             'transaction_type' => static::$typeSell,
             'transaction_date' => $data['transaction_date'],
