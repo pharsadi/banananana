@@ -10,7 +10,7 @@ class TransactionRequest extends BaseRequest
         return [
             'price' => 'nullable|numeric',
             'quantity' => 'required|integer|min:1',
-            'date' => 'required|date_format:Y-m-d'
+            'transaction_date' => 'required|date_format:Y-m-d'
         ];
     }
 }

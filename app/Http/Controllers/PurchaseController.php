@@ -2,13 +2,23 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TransactionRequest;
+use App\Transaction;
+use \App\Repositories\Transaction as TransactionRepository;
+use Illuminate\Http\Response;
 
 class PurchaseController extends Controller
 {
-    protected static $defaultPurchasePrice = 0.20;
+    /** @var TransactionRepository  */
+    protected $transactionRepo;
+
+    public function __construct(Transaction $transaction)
+    {
+        $this->transactionRepo = new TransactionRepository($transaction);
+    }
 
     public function create(TransactionRequest $request, $item)
     {
-        return response()->json(['status' => 'OK']);
+        $this->transactionRepo->purchase($request->validated(), $item);
+        return response()->json(['status' => 'OK'], Response::HTTP_CREATED);
     }
 }
