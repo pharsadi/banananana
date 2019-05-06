@@ -20,6 +20,6 @@ class PurchaseController extends Controller
     public function create(TransactionRequest $request, Item $item)
     {
         $this->transactionRepo->purchase($request->validated(), $item);
-        return response()->json(['status' => 'OK'], Response::HTTP_CREATED);
+        return response()->json(['success' => true], Response::HTTP_CREATED);
     }
 }

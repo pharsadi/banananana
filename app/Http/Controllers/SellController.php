@@ -19,7 +19,22 @@ class SellController extends Controller
 
     public function create(TransactionRequest $request, Item $item)
     {
-        $this->transactionRepo->sell($request->validated(), $item);
-        return response()->json(['status' => 'OK'], Response::HTTP_CREATED);
+        $validatedRequest = $request->validated();
+        $transactionDate = $validatedRequest['transaction_date'];
+        $quantity = $validatedRequest['quantity'];
+
+        if (!$this->transactionRepo->canSell($transactionDate, $quantity, $item)) {
+            return response()->json([
+                'success' => false,
+                'errors' => [
+                    'quantity' => [
+                        "Sold out"
+                    ]
+                ]
+            ], Response::HTTP_BAD_REQUEST);
+        }
+
+        $this->transactionRepo->sell($validatedRequest, $item);
+        return response()->json(['success' => true], Response::HTTP_CREATED);
     }
 }

@@ -2,6 +2,7 @@
 
 use App\Item;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Transaction implements RepositoryInterface
 {
@@ -12,6 +13,7 @@ class Transaction implements RepositoryInterface
     protected static $defaultSellPrice = 0.35;
     protected static $typePurchase = 'purchase';
     protected static $typeSell = 'sell';
+    protected static $daysToExpire = 10;
 
     /**
      * Constructor to bind model to repo
@@ -99,6 +101,81 @@ class Transaction implements RepositoryInterface
     public function with($relations)
     {
         return $this->model->with($relations);
+    }
+
+    /**
+     * @param $startDate
+     * @param $endDate
+     * @param Item $item
+     * @return mixed
+     */
+    public function purchaseMetrics($startDate, $endDate, Item $item)
+    {
+        $metrics = $this->basicMetrics($startDate, $endDate, $item->name, static::$typePurchase);
+        return $metrics;
+    }
+
+    /**
+     * @param $startDate
+     * @param $endDate
+     * @param Item $item
+     * @return mixed
+     */
+    public function sellMetrics($startDate, $endDate, Item $item)
+    {
+        $metrics = $this->basicMetrics($startDate, $endDate, $item->name, static::$typeSell);
+        return $metrics;
+    }
+
+    /**
+     * @param $startDate
+     * @param $endDate
+     * @param $itemName
+     * @param $transactionType
+     * @return mixed
+     */
+    public function basicMetrics($startDate, $endDate, $itemName, $transactionType)
+    {
+        $metrics = $this->model->select(DB::raw('sum(quantity) as quantity, sum(quantity * price_per_item) as totalPrice'))
+            ->where('item', $itemName)
+            ->where('transaction_type', $transactionType)
+            ->where('transaction_date', '<=', $endDate);
+
+        if (!is_null($startDate)) {
+            $metrics->where('transaction_date', '>=', $startDate);
+        }
+
+        return $metrics->first();
+    }
+
+    /**
+     * @param $startDate
+     * @param $endDate
+     * @param Item $item
+     * @return mixed
+     */
+    public function allInventory($startDate, $endDate, Item $item)
+    {
+        $purchaseMetrics = $this->purchaseMetrics($startDate, $endDate, $item);
+        $sellMetrics = $this->sellMetrics($startDate, $endDate, $item);
+        return ($purchaseMetrics->quantity - $sellMetrics->quantity);
+    }
+
+    /**
+     * @param $date
+     * @param $sellQuantity
+     * @param Item $item
+     * @return bool
+     */
+    public function canSell($date, $sellQuantity, Item $item)
+    {
+        $qualifiedDate = new \DateTime($date);
+        $qualifiedDate = $qualifiedDate->modify('-' . static::$daysToExpire . ' days');
+
+        $purchaseMetrics = $this->purchaseMetrics($qualifiedDate->format('Y-m-d'), $date, $item);
+        $sellMetrics = $this->sellMetrics(NULL, $date, $item);
+
+        return ($purchaseMetrics->quantity - $sellMetrics->quantity - $sellQuantity) > 0;
     }
 
     /**
