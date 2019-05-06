@@ -211,4 +211,23 @@ class Transaction implements RepositoryInterface
         ];
         return $this->create($createData);
     }
+
+    /**
+     * @param $startDate
+     * @param $endDate
+     * @param Item $item
+     * @return array
+     */
+    public function metrics($startDate, $endDate, Item $item)
+    {
+        $purchaseMetrics = $this->purchaseMetrics($startDate, $endDate, $item);
+        $sellMetrics = $this->sellMetrics($startDate, $endDate, $item);
+
+        return [
+            'inventory' => $purchaseMetrics->quantity - $sellMetrics->quantity,
+            'expiredInventory' => 0,
+            'soldCount' => $sellMetrics->quantity,
+            'profit' => $sellMetrics->totalPrice - $purchaseMetrics->totalPrice,
+        ];
+    }
 }
