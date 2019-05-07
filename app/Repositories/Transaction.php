@@ -221,11 +221,18 @@ class Transaction implements RepositoryInterface
     public function metrics($startDate, $endDate, Item $item)
     {
         $purchaseMetrics = $this->purchaseMetrics($startDate, $endDate, $item);
+        
+        $expiredStartDate = new \DateTime($startDate);
+        $expiredStartDate->modify('-' . static::$daysToExpire . ' days');
+        $expiredEndDate = new \DateTime($endDate);
+        $expiredEndDate->modify('-' . static::$daysToExpire . ' days');
+        $expiredMetrics = $this->purchaseMetrics($expiredStartDate, $expiredEndDate, $item);
+
         $sellMetrics = $this->sellMetrics($startDate, $endDate, $item);
 
         return [
             'inventory' => $purchaseMetrics->quantity - $sellMetrics->quantity,
-            'expiredInventory' => 0,
+            'expiredInventory' => $expiredMetrics->quantity - $sellMetrics->quantity,
             'soldCount' => $sellMetrics->quantity,
             'profit' => $sellMetrics->totalPrice - $purchaseMetrics->totalPrice,
         ];

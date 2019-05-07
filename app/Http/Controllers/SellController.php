@@ -3,20 +3,17 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\TransactionRequest;
 use App\Item;
-use App\Transaction;
-use \App\Repositories\Transaction as TransactionRepository;
 use Illuminate\Http\Response;
 
-class SellController extends Controller
+class SellController extends TransactionController
 {
-    /** @var TransactionRepository  */
-    protected $transactionRepo;
-
-    public function __construct(Transaction $transaction)
-    {
-        $this->transactionRepo = new TransactionRepository($transaction);
-    }
-
+    /**
+     * POST call
+     *
+     * @param TransactionRequest $request
+     * @param Item $item
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function create(TransactionRequest $request, Item $item)
     {
         $validatedRequest = $request->validated();
@@ -28,7 +25,7 @@ class SellController extends Controller
                 'success' => false,
                 'errors' => [
                     'quantity' => [
-                        "Sold out"
+                        "Requested quantity is more than inventory"
                     ]
                 ]
             ], Response::HTTP_BAD_REQUEST);
