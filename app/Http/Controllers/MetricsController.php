@@ -22,6 +22,6 @@ class MetricsController extends TransactionController
 
         $metrics = $this->transactionRepo->metrics($startDate, $endDate, $item);
 
-        return response()->json($metrics, Response::HTTP_CREATED);
+        return response()->json($metrics, Response::HTTP_OK);
     }
 }

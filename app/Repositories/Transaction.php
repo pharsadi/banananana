@@ -175,7 +175,7 @@ class Transaction implements RepositoryInterface
         $purchaseMetrics = $this->purchaseMetrics($qualifiedDate->format('Y-m-d'), $date, $item);
         $sellMetrics = $this->sellMetrics(NULL, $date, $item);
 
-        return ($purchaseMetrics->quantity - $sellMetrics->quantity - $sellQuantity) > 0;
+        return ($purchaseMetrics->quantity - $sellMetrics->quantity - $sellQuantity) >= 0;
     }
 
     /**
@@ -221,19 +221,20 @@ class Transaction implements RepositoryInterface
     public function metrics($startDate, $endDate, Item $item)
     {
         $purchaseMetrics = $this->purchaseMetrics($startDate, $endDate, $item);
-        
+        $sellMetrics = $this->sellMetrics($startDate, $endDate, $item);
+
         $expiredStartDate = new \DateTime($startDate);
         $expiredStartDate->modify('-' . static::$daysToExpire . ' days');
         $expiredEndDate = new \DateTime($endDate);
         $expiredEndDate->modify('-' . static::$daysToExpire . ' days');
         $expiredMetrics = $this->purchaseMetrics($expiredStartDate, $expiredEndDate, $item);
 
-        $sellMetrics = $this->sellMetrics($startDate, $endDate, $item);
+        $inventory = $purchaseMetrics->quantity - $sellMetrics->quantity;
 
         return [
-            'inventory' => $purchaseMetrics->quantity - $sellMetrics->quantity,
-            'expiredInventory' => $expiredMetrics->quantity - $sellMetrics->quantity,
-            'soldCount' => $sellMetrics->quantity,
+            'newInventory' => ($inventory < 0) ? 0 : $inventory,
+            'expiredInventory' => is_null($expiredMetrics->quantity) ? 0 : ($expiredMetrics->quantity - $sellMetrics->quantity),
+            'soldCount' => (int) $sellMetrics->quantity,
             'profit' => $sellMetrics->totalPrice - $purchaseMetrics->totalPrice,
         ];
     }
