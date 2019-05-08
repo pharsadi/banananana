@@ -4,9 +4,9 @@ Banananana is a set of API for Bob to track his banana
 
 ## Requirements - Dev Environment
 
-* Composer - https://getcomposer.org/
-* VirtualBox - https://www.virtualbox.org/
-* Vagrant - https://www.vagrantup.com/
+* Composer - https://getcomposer.org
+* VirtualBox - https://www.virtualbox.org
+* Vagrant - https://www.vagrantup.com
 * Homestead - https://laravel.com/docs/5.8/homestead
 
 ## Installation - Dev Environment
@@ -171,9 +171,9 @@ curl -X POST \
 
 **Path Params:**
 
-| Param        | Required           | Type  | Example | Notes  |
-| ------------- | ------------- | ----- | ---- |
-| {item}     | Yes | String | banana | "banana" is built in. More items can be added to the `items` table if needed. |
+Param | Required | Type | Example | Notes
+--- | --- | --- | ---
+{item} | Yes | String | banana | "banana" is built in. More items can be added to the `items` table if needed.
 
 
 **Body Params:**
