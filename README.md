@@ -4,20 +4,20 @@ Banananana is a set of API for Bob to track his banana
 
 ## Requirements - Dev Environment
 
-* Composer [https://getcomposer.org/]
-* VirtualBox [https://www.virtualbox.org/]
-* Vagrant [https://www.vagrantup.com/]
-* Homestead [https://laravel.com/docs/5.8/homestead]
+* Composer - https://getcomposer.org/
+* VirtualBox - https://www.virtualbox.org/
+* Vagrant - https://www.vagrantup.com/
+* Homestead - https://laravel.com/docs/5.8/homestead
 
 ## Installation - Dev Environment
 
 ### Install VirtualBox
 
-[https://www.virtualbox.org/wiki/Downloads]
+https://www.virtualbox.org/wiki/Downloads
 
 ### Install Vagrant
 
-[https://www.vagrantup.com/downloads.html]
+https://www.vagrantup.com/downloads.html
 
 ### Install Homestead Vagrant Box
 
@@ -65,7 +65,7 @@ vagrant up
 
 Now, the project can be accessed at `http://homestead.test`.
 
-More details can be found on [https://laravel.com/docs/5.8/homestead#per-project-installation]
+More details can be found on https://laravel.com/docs/5.8/homestead#per-project-installation
 
 
 ## Unit Tests
@@ -106,7 +106,9 @@ Please make sure to run the migrate & database seed before calling the APIs.
 ### Sell API
 
 **Method:** POST
+
 **Path:**  /api/sell/{item}
+
 **Path Params:**
 
 | Param        | Required           | Type  | Example | Notes  |
@@ -164,7 +166,9 @@ curl -X POST \
 ### Purchase API
 
 **Method:** POST
+
 **Path:**  /api/purchase/{item}
+
 **Path Params:**
 
 | Param        | Required           | Type  | Example | Notes  |
@@ -225,7 +229,9 @@ curl -X POST \
 ### Metrics API
 
 **Method:** GET
+
 **Path:**  /api/metrics/{item}?start_date={startDate}&end_date={endDate}
+
 **Path Params:**
 
 | Param        | Required           | Type  | Example | Notes  |
