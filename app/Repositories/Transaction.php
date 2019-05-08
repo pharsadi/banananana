@@ -232,9 +232,9 @@ class Transaction implements RepositoryInterface
         $inventory = $purchaseMetrics->quantity - $sellMetrics->quantity;
 
         return [
-            'newInventory' => ($inventory < 0) ? 0 : $inventory,
-            'expiredInventory' => is_null($expiredMetrics->quantity) ? 0 : ($expiredMetrics->quantity - $sellMetrics->quantity),
-            'soldCount' => (int) $sellMetrics->quantity,
+            'new_inventory' => ($inventory < 0) ? 0 : $inventory,
+            'expired_inventory' => is_null($expiredMetrics->quantity) ? 0 : ($expiredMetrics->quantity - $sellMetrics->quantity),
+            'sold_count' => (int) $sellMetrics->quantity,
             'profit' => $sellMetrics->totalPrice - $purchaseMetrics->totalPrice,
         ];
     }

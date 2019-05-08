@@ -105,24 +105,41 @@ Please make sure to run the migrate & database seed before calling the APIs.
 
 ### Sell API
 
-**Method:** POST
+#### Method: POST
 
-**Path:**  /api/sell/{item}
+#### Path: /api/sell/{item}
 
-**Path Params:**
+#### Path Params:
 
-| Param        | Required           | Type  | Example | Notes  |
-| ------------- | ------------- | ----- | ---- |
-| {item}     | Yes | String | banana | "banana" is built in. More items can be added to the `items` table if needed. |
+##### {item}
 
+* Required: Yes
+* Type: String
+* Example: banana
+* Notes: "banana" is built in. More items can be added to the `items` table if needed.
 
-**Body Params:**
+#### Body Params:
 
-| Param        | Required           | Type  | Example | Notes  |
-| ------------- | ------------- | ----- | ---- |
-| quantity     | Yes | Integer | 4 | Quantity of item in the transaction|
-| transaction_date     | Yes | Date | 2019-05-01 | Transaction date. Must be in format YYYY-MM-DD |
-| price | No | Numeric | 0.85 | If not passed, default sell price is $0.35 |
+##### {quantity}
+
+* Required: Yes
+* Type: Integer
+* Example: 4
+* Notes: Quantity of item in the transaction.
+
+##### {transaction_date}
+
+* Required: Yes
+* Type: Date
+* Example: 2019-05-01
+* Notes: Transaction date. Must be in format YYYY-MM-DD.
+
+##### {price}
+
+* Required: No
+* Type: Numeric
+* Example: 0.05
+* Notes: Item sell price. Default is $0.35.
 
 #### Examples
 
@@ -165,24 +182,42 @@ curl -X POST \
 
 ### Purchase API
 
-**Method:** POST
+#### Method: POST
 
-**Path:**  /api/purchase/{item}
+#### Path: /api/purchase/{item}
 
-**Path Params:**
+#### Path Params:
 
-Param | Required | Type | Example | Notes
---- | --- | --- | ---
-{item} | Yes | String | banana | "banana" is built in. More items can be added to the `items` table if needed.
+##### {item}
 
+* Required: Yes
+* Type: String
+* Example: banana
+* Notes: "banana" is built in. More items can be added to the `items` table if needed.
 
-**Body Params:**
+#### Body Params:
 
-| Param        | Required           | Type  | Example | Notes  |
-| ------------- | ------------- | ----- | ---- |
-| quantity     | Yes | Integer | 4 | Quantity of item in the transaction|
-| transaction_date     | Yes | Date | 2019-05-01 | Transaction date. Must be in format YYYY-MM-DD |
-| price | No | Numeric | 0.05 | If not passed, default sell price is $0.20 |
+##### {quantity}
+
+* Required: Yes
+* Type: Integer
+* Example: 4
+* Notes: Quantity of item in the transaction.
+
+##### {transaction_date}
+
+* Required: Yes
+* Type: Date
+* Example: 2019-05-01
+* Notes: Transaction date. Must be in format YYYY-MM-DD.
+
+##### {price}
+
+* Required: No
+* Type: Numeric
+* Example: 0.05
+* Notes: Item purchase price. Default is $0.20.
+
 
 #### Examples
 
@@ -228,17 +263,35 @@ curl -X POST \
 
 ### Metrics API
 
-**Method:** GET
 
-**Path:**  /api/metrics/{item}?start_date={startDate}&end_date={endDate}
+#### Method: POST
 
-**Path Params:**
+#### Path: /api/metrics/{item}?start_date={startDate}&end_date={endDate}
 
-| Param        | Required           | Type  | Example | Notes  |
-| ------------- | ------------- | ----- | ---- |
-| {item}     | Yes | String | banana | "banana" is built in. More items can be added to the `items` table if needed. |
-| {startDate}     | Yes | Date | 2019-05-01 | Metrics start date. Must be in format YYYY-MM-DD |
-| {endDate}     | Yes | Date | 2019-05-06 | Metrics end date. Must be in format YYYY-MM-DD |
+#### Path Params:
+
+##### {item}
+
+* Required: Yes
+* Type: String
+* Example: banana
+* Notes: "banana" is built in. More items can be added to the `items` table if needed.
+
+##### {startDate}
+
+* Required: Yes
+* Type: Date
+* Example: 2019-05-01
+* Notes: Metrics start date. Must be in format YYYY-MM-DD.
+
+##### {endDate}
+
+* Required: Yes
+* Type: Date
+* Example: 2019-05-02
+* Notes: Metrics end date. Must be in format YYYY-MM-DD.
+
+#### Examples
 
 **Request**
 ```
@@ -248,9 +301,9 @@ curl -X GET \
 **Response**
 ```
 {
-    "newInventory": 3,
-    "expiredInventory": 0,
-    "soldCount": 2,
+    "new_inventory": 3,
+    "expired_inventory": 0,
+    "sold_count": 2,
     "profit": -0.30
 }
 ```
